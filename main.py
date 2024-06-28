@@ -1,3 +1,4 @@
+import os
 import boto3
 import streamlit as st
 from langchain_community.llms import Bedrock
@@ -21,8 +22,18 @@ Question: {question}
 
 Assistant:"""
 
+
+aws_access_key_id = os.getenv("aws_access_key_id")
+aws_secret_access_key=os.getenv("aws_secret_access_key")
+region_name=os.getenv("region_name")
+
 # Bedrock client
-bedrock = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
+bedrock = boto3.client(
+                service_name="bedrock-runtime",
+                region_name="us-east-1",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key 
+                )
 
 # Get embeddings model from bedrock
 bedrock_embedding = BedrockEmbeddings(model_id="amazon.titan-embed-text-v1", client=bedrock)
